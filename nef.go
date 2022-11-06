@@ -2,12 +2,13 @@ package main
 
 import (
     //"context"
-	"fmt"
-	"net/http"
 	//"strings"
 	//"time"
+	"fmt"
+	"net/http"	
 	"github.com/segmentio/encoding/json"
 	"log"	
+	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	//"github.com/gorilla/mux"
 	//"github.com/arieldll/free5gc-ariel/blob/main/NFs/nef/model_nef_event_exposure_subsc"
@@ -22,11 +23,54 @@ type SubRequest struct {
 	Addr string `json:"addr"`
 }
 
-func unsubscriptionHandler(w http.ResponseWriter, r *http.Request) {	
+func goLinkById(s string){
+	client := &http.Client{}
+	//get link by id
+	l := "https://back.placafipe.xyz/solicitacoes/total-por-dia-usuario"
+	req, err := http.NewRequest("GET", l, nil)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+	fmt.Println(req)
+    
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }	
+	fmt.Println(resp)
 
+	defer resp.Body.Close()
+
+    // Read Response Body
+    respBody, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+	//return resp
+	// Display Results
+    fmt.Println("response Status : ", resp.Status)
+    fmt.Println("response Headers : ", resp.Header)
+    fmt.Println("response Body : ", string(respBody))
 }
 
-func subscriptionHandler(w http.ResponseWriter, r *http.Request) {	
+func fireHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
+	id := ps.ByName("id")
+	fmt.Println("id ", id)
+	//rec := goLinkById(id)
+	//fmt.Println("rec ", rec)
+}
+
+func unsubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){	
+	id := ps.ByName("id")
+	fmt.Println("parametro ", id)
+}
+
+//func subscriptionHandler(w http.ResponseWriter, r *http.Request) {	
+func subscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {	
     if r.Method == "POST" && r.URL.Path == "/subscriptions" {
 		//var p SubRequest
 		reqBody, _ := ioutil.ReadAll(r.Body)
@@ -113,10 +157,15 @@ func main() {
 		}
 	}*/
 	
-	http.HandleFunc("/subscriptions", subscriptionHandler) // Update this line of code	
+	router := httprouter.New()
+	//http.HandleFunc("/subscriptions", subscriptionHandler) // Update this line of code	
+	router.POST("/subscriptions", subscriptionHandler)
+	router.POST("/fire/:id", fireHandler)
+	router.DELETE("/subscriptions/:id", unsubscriptionHandler)
 	fmt.Printf("Starting server at port 20000\n")
 
-    if err := http.ListenAndServe(":20000", nil); err != nil {
+	//goLinkById("1")
+    if err := http.ListenAndServe(":20000", router); err != nil {
         log.Fatal(err)
     }
 }
