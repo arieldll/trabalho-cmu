@@ -67,6 +67,12 @@ func fireHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
 func unsubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){	
 	id := ps.ByName("id")
 	fmt.Println("parametro ", id)
+	w.WriteHeader(http.StatusNoContent)
+}
+
+func updateSubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){	
+	id := ps.ByName("id")
+	fmt.Println("parametro ", id)
 }
 
 //func subscriptionHandler(w http.ResponseWriter, r *http.Request) {	
@@ -160,8 +166,9 @@ func main() {
 	router := httprouter.New()
 	//http.HandleFunc("/subscriptions", subscriptionHandler) // Update this line of code	
 	router.POST("/subscriptions", subscriptionHandler)
-	router.POST("/fire/:id", fireHandler)
+	router.PUT("/subscriptions/:id", updateSubscriptionHandler)
 	router.DELETE("/subscriptions/:id", unsubscriptionHandler)
+	router.POST("/fire/:id", fireHandler)
 	fmt.Printf("Starting server at port 20000\n")
 
 	//goLinkById("1")
