@@ -1,32 +1,164 @@
 package main
 
 import (
-    //"context"
-	//"strings"
-	//"time"
+    "context"
+	"strings"
+	"time"
 	"fmt"
 	"net/http"	
 	"github.com/segmentio/encoding/json"
 	"log"	
 	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	//"os"
 	//"github.com/gorilla/mux"
 	//"github.com/arieldll/free5gc-ariel/blob/main/NFs/nef/model_nef_event_exposure_subsc"
-	//"github.com/google/uuid"
-    //"github.com/free5gc/openapi/Nnrf_NFManagement"
-	//"github.com/free5gc/openapi/models"	
-	//"github.com/urfave/cli"
+	"github.com/google/uuid"
+    "github.com/free5gc/openapi/Nnrf_NFManagement"
+	"github.com/free5gc/openapi/models"	
+	"github.com/urfave/cli"
 )
+
+const DataCollectionNefRegistration = "datacollection.nef2.Registration"
+
+type RegistrationObject struct {
+	Id string
+	Addr string
+	Type string
+}
 
 type SubRequest struct {
 	Id string `json:"id"`
 	Addr string `json:"addr"`
+	Type string `json:"type"`
+}
+
+func GetMongoDBUri()string{
+	//escrever a leitura posterior
+	return "mongodb://127.0.0.1:27017"
+	//return GetConfiguration().MongoURI
+}
+
+func GetDBName()string{
+	//ler do yaml
+	return "free5gc"
+}
+
+func CloseConnection(cli*mongo.Client, ctx context.Context){
+	cli.Disconnect(ctx)
+}
+
+func GetMongoConnection() (*mongo.Database, *mongo.Client, context.Context) {
+	client, err := mongo.NewClient(options.Client().ApplyURI(GetMongoDBUri()))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	conn := client.Database(GetDBName())
+	return conn, client, ctx
+}
+
+func GetCollectionsName()[]string {
+	var CollectionNames []string
+	db, client, ctx := GetMongoConnection()
+	result, err := db.ListCollectionNames(context.TODO(), bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, coll := range result {
+		CollectionNames = append(CollectionNames, coll)
+	}
+	CloseConnection(client, ctx)
+	return CollectionNames
+}
+
+func AddRegistrationAccept(data *RegistrationObject){	
+	db, client, ctx  := GetMongoConnection()
+	collection := db.Collection(DataCollectionNefRegistration)
+	_, err := collection.InsertMany(context.TODO(), []interface{}{data})
+
+	fmt.Println("The Registration was saved on the database...")
+	/* close MONGO connection */
+	CloseConnection(client, ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func RemoveAFsRegistered(id string){
+	db, client, ctx  := GetMongoConnection()
+	collection := db.Collection(DataCollectionNefRegistration)
+	findOptions := options.Find()
+	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err !=nil {
+        log.Fatal(err)
+    }
+
+	for cur.Next(context.TODO()) {
+		var elem RegistrationObject
+        err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if(id == elem.Id){
+			result, err := collection.DeleteOne(context.TODO(), elem)
+			if err != nil {
+				log.Fatal(err)
+			}			
+			fmt.Printf("The Registration removed %v document(s)\n", result.DeletedCount)
+			break
+		}				
+	}
+	CloseConnection(client, ctx)
+	/*result, err := podcastsCollection.DeleteOne(ctx, bson.M{"title": "The Polyglot Developer Podcast"})
+	if err != nil {
+		log.Fatal(err)
+	}*/
+}
+
+func GetAFsRegistered(afType string)[] RegistrationObject{
+	db, client, ctx := GetMongoConnection()
+	collection := db.Collection(DataCollectionNefRegistration)
+	findOptions := options.Find()
+	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err !=nil {
+        log.Fatal(err)
+    }
+	var results[] RegistrationObject
+	for cur.Next(context.TODO()) {
+		var elem RegistrationObject
+        err := cur.Decode(&elem)
+		if err != nil {
+            log.Fatal(err)
+        }
+		if elem.Type == afType {
+			results = append(results, elem)
+		}
+		//fmt.Println(elem.Id)
+	}
+	//fmt.Println(collection)	
+	//fmt.Println(client, ctx)
+	//_, err := collection.InsertMany(context.TODO(), []interface{}{data})
+
+	/* close MONGO connection */
+	CloseConnection(client, ctx)
+	/*if err != nil {
+		log.Fatal(err)
+	}*/
+	return results
 }
 
 func goLinkById(s string){
 	client := &http.Client{}
 	//get link by id
-	l := "https://back.placafipe.xyz/solicitacoes/total-por-dia-usuario"
+	l := s //"https://back.placafipe.xyz/solicitacoes/total-por-dia-usuario"
 	req, err := http.NewRequest("GET", l, nil)
     if err != nil {
         fmt.Println(err)
@@ -52,14 +184,31 @@ func goLinkById(s string){
 
 	//return resp
 	// Display Results
-    fmt.Println("response Status : ", resp.Status)
-    fmt.Println("response Headers : ", resp.Header)
+    //fmt.Println("response Status : ", resp.Status)
+    //fmt.Println("response Headers : ", resp.Header)
     fmt.Println("response Body : ", string(respBody))
 }
 
 func fireHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
-	id := ps.ByName("id")
-	fmt.Println("id ", id)
+	start := time.Now()
+	//id := ps.ByName("id")
+	//fmt.Println("id ", id)
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	//fmt.Println(r.Body)
+	var post SubRequest 
+	json.Unmarshal(reqBody, &post)
+	fireType := post.Type
+	registers := GetAFsRegistered(fireType)
+	elapsed := time.Since(start)
+	//log.Printf("Time for execution %s", elapsed)
+	fmt.Println("Time for execution", len(registers), ";", elapsed)
+	//fmt.Println(" ---- Fire!! ---- ", id)
+	for i, v := range registers{
+		fmt.Println(i)
+		fmt.Println(v.Addr)
+		goLinkById(v.Addr)
+	}
+	
 	//rec := goLinkById(id)
 	//fmt.Println("rec ", rec)
 }
@@ -67,12 +216,24 @@ func fireHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
 func unsubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){	
 	id := ps.ByName("id")
 	fmt.Println("parametro ", id)
+	RemoveAFsRegistered(id)
 	w.WriteHeader(http.StatusNoContent)
 }
 
 func updateSubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){	
 	id := ps.ByName("id")
 	fmt.Println("parametro ", id)
+	RemoveAFsRegistered(id)
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	fmt.Println(r.Body)
+	var post SubRequest 
+	json.Unmarshal(reqBody, &post)		
+
+	var oRegister RegistrationObject;
+	oRegister.Addr = post.Addr
+	oRegister.Id = post.Id
+	oRegister.Type = post.Type
+	AddRegistrationAccept(&oRegister)
 }
 
 //func subscriptionHandler(w http.ResponseWriter, r *http.Request) {	
@@ -82,12 +243,16 @@ func subscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		reqBody, _ := ioutil.ReadAll(r.Body)
 		fmt.Println(r.Body)
 		var post SubRequest 
-		json.Unmarshal(reqBody, &post)
+		json.Unmarshal(reqBody, &post)		
 
-		fid := post.Id
-		faddr := post.Addr
+		var oRegister RegistrationObject;
+		oRegister.Addr = post.Addr
+		oRegister.Id = post.Id
+		oRegister.Type = post.Type
+		AddRegistrationAccept(&oRegister)
 
-		fmt.Println(fid, faddr)
+		fmt.Println(oRegister.Id, oRegister.Addr, oRegister.Type)
+		
 		w.WriteHeader(http.StatusCreated)
 		return;
 		//fmt.Fprintf(w, "BODYYYY", r.Body)
@@ -110,7 +275,7 @@ func subscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.P
 
 
 func main() {
-	/*app := cli.NewApp()
+	app := cli.NewApp()
 	app.Name = "nef"
 	app.Usage = "5G NEF"	
 	
@@ -161,8 +326,14 @@ func main() {
 			fmt.Println("NRF return wrong status code", status)
 			break
 		}
-	}*/
-	
+	}
+
+	//
+	//dkt := GetCollectionsName()
+	//fmt.Println(dkt)
+
+	//GetAFsRegistered("type1")
+
 	router := httprouter.New()
 	//http.HandleFunc("/subscriptions", subscriptionHandler) // Update this line of code	
 	router.POST("/subscriptions", subscriptionHandler)
