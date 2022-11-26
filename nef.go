@@ -5,14 +5,15 @@ import (
 	"strings"
 	"time"
 	"fmt"
-	"net/http"	
-	"github.com/segmentio/encoding/json"
+	"net/http"		
 	"log"	
-	"github.com/julienschmidt/httprouter"
+	"bytes"
 	"io/ioutil"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/julienschmidt/httprouter"
+	"github.com/segmentio/encoding/json"	
 	//"os"
 	//"github.com/gorilla/mux"
 	//"github.com/arieldll/free5gc-ariel/blob/main/NFs/nef/model_nef_event_exposure_subsc"
@@ -34,6 +35,11 @@ type SubRequest struct {
 	Id string `json:"id"`
 	Addr string `json:"addr"`
 	Type string `json:"type"`
+	Data string `json:"data"`
+}
+
+type SendDataStruct struct { 
+	Data string `json:"data"`
 }
 
 func GetMongoDBUri()string{
@@ -112,7 +118,7 @@ func RemoveAFsRegistered(id string){
 			if err != nil {
 				log.Fatal(err)
 			}			
-			fmt.Printf("The Registration removed %v document(s)\n", result.DeletedCount)
+			fmt.Printf("The Registration removed %v AF: %v\n", result.DeletedCount, id)
 			break
 		}				
 	}
@@ -155,11 +161,16 @@ func GetAFsRegistered(afType string)[] RegistrationObject{
 	return results
 }
 
-func goLinkById(s string){
+func goLinkById(s string, data string){
 	client := &http.Client{}
 	//get link by id
 	l := s //"https://back.placafipe.xyz/solicitacoes/total-por-dia-usuario"
-	req, err := http.NewRequest("GET", l, nil)
+	
+	var sendData SendDataStruct;
+	sendData.Data = data
+	var buff bytes.Buffer
+	err := json.NewEncoder(&buff).Encode(sendData)
+	req, err := http.NewRequest("POST", l, &buff)
     if err != nil {
         fmt.Println(err)
         return
@@ -198,15 +209,17 @@ func fireHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
 	var post SubRequest 
 	json.Unmarshal(reqBody, &post)
 	fireType := post.Type
+	dataReceived := post.Data
 	registers := GetAFsRegistered(fireType)
 	elapsed := time.Since(start)
 	//log.Printf("Time for execution %s", elapsed)
-	fmt.Println("Time for execution", len(registers), ";", elapsed)
+	fmt.Println("Time for execution", len(registers), ";", elapsed, dataReceived)
 	//fmt.Println(" ---- Fire!! ---- ", id)
+
 	for i, v := range registers{
 		fmt.Println(i)
 		fmt.Println(v.Addr)
-		goLinkById(v.Addr)
+		goLinkById(v.Addr, dataReceived)
 	}
 	
 	//rec := goLinkById(id)
