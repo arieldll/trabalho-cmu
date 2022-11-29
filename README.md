@@ -5,7 +5,7 @@
 
 Desenvolvimento de Software Orientado à Computação Móvel e Ubíqua
 
-Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o projeto <a href="https://github.com/free5gc/free5gc">free5GC</a>, com todos os endpoints definidos pela exposição de eventos, através das definições da 3GPP para <a href="https://github.com/jdegre/5GC_APIs/blob/Rel-18/TS29591_Nnef_EventExposure.yaml">TS29591_Nnef_EventExposure</a>. Funciona em conjunto com a Application Function (AF) disponível <a href="https://github.com/opoze/5gaf">aqui</a>.
+Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o projeto <a href="https://github.com/free5gc/free5gc">free5gc</a>, com todos os endpoints definidos pela exposição de eventos, através das definições da 3GPP para <a href="https://github.com/jdegre/5GC_APIs/blob/Rel-18/TS29591_Nnef_EventExposure.yaml">TS29591_Nnef_EventExposure</a>. Funciona em conjunto com a Application Function (AF) disponível <a href="https://github.com/opoze/5gaf">aqui</a>.
 
 ## Arquitetura
 A arquitetura de funcionamento segue o seguinte fluxo: 
@@ -13,7 +13,7 @@ A arquitetura de funcionamento segue o seguinte fluxo:
 
 
 ## Requisitos
-- Core funcional do projeto free5GC
+- Core funcional do projeto free5gc
 - Linguagem go versão 1.17 ou superior 
 - Ubuntu 22.04 ou superior 
 - Bibliotecas da linguagem go 
@@ -45,7 +45,7 @@ Faça um clone ou fork do projeto oficial do free5gc:
 git clone https://github.com/free5gc/free5gc
 ```
 
-Instale todas as dependências do projeto. Após, configure o core do free5GC de modo que a função Network Repository Function (NRF) esteja exposta e rodando. Você pode ter informações de como proceder com isso <a href="https://github.com/free5gc/free5gc/wiki">aqui</a>
+Instale todas as dependências do projeto. Após, configure o core do free5gc de modo que a função Network Repository Function (NRF) esteja exposta e rodando. Você pode ter informações de como proceder com isso <a href="https://github.com/free5gc/free5gc/wiki">aqui</a>
 
 Inicialize a NRF. Se você estiver usando o projeto free5gc, a partir da raiz do projeto
 ```
