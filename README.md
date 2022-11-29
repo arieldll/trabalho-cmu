@@ -24,7 +24,8 @@ $ go get github.com/segmentio/encoding/json
 $ go get github.com/google/uuid
 $ go get github.com/free5gc/openapi/Nnrf_NFManagement
 $ go get github.com/free5gc/openapi/models
-$ go get github.com/urfave/cli```
+$ go get github.com/urfave/cli
+```
 
 
 ## Por onde começar
