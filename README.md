@@ -15,7 +15,7 @@ A arquitetura de funcionamento segue o seguinte fluxo:
 ## Requisitos
 - Core funcional do projeto free5GC
 - Linguagem go versão 1.17 ou superior 
-- Ubuntu 20.04 ou superior 
+- Ubuntu 22.04 ou superior 
 - Bibliotecas da linguagem go 
 
 ## Como instalar o go? 
