@@ -5,7 +5,7 @@
 
 Desenvolvimento de Software Orientado à Computação Móvel e Ubíqua
 
-Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o projeto <a href="https://github.com/free5gc/free5gc">free5GC</a>, com todos os endpoints definidos pela exposição de eventos, através das definições da 3GPP para <a href="https://github.com/jdegre/5GC_APIs/blob/Rel-18/TS29591_Nnef_EventExposure.yaml">TS29591_Nnef_EventExposure</a>. Funciona em conjunto com a Application Function (AF) disponível <a href="https://github.com/opoze/5gaf">aqui</a>
+Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o projeto <a href="https://github.com/free5gc/free5gc">free5GC</a>, com todos os endpoints definidos pela exposição de eventos, através das definições da 3GPP para <a href="https://github.com/jdegre/5GC_APIs/blob/Rel-18/TS29591_Nnef_EventExposure.yaml">TS29591_Nnef_EventExposure</a>. Funciona em conjunto com a Application Function (AF) disponível <a href="https://github.com/opoze/5gaf">aqui</a>.
 
 ## Arquitetura
 A arquitetura de funcionamento segue o seguinte fluxo: 
