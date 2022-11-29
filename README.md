@@ -1,4 +1,4 @@
-<p align="left"> <a href="https://golang.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg" alt="go" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> </p>
+<p align="left"> <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> <a href="https://golang.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg" alt="go" width="40" height="40"/> </a> <a href="https://www.linux.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> </p>
 
 
 Desenvolvimento de Software Orientado à Computação Móvel e Ubíqua
@@ -8,6 +8,7 @@ Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o p
 ## Requisitos: 
 - Core funcional do projeto free5GC
 - Linguagem go versão 1.17 ou superior 
+- Ubuntu 20.04 ou superior 
 - Bibliotecas da linguagem go 
 
 ## Como instalar o go? 
@@ -41,7 +42,7 @@ Instale todas as dependências do projeto. Após, configure o core do free5GC de
 
 Inicialize a NRF. Se você estiver usando o projeto free5gc, a partir da raiz do projeto
 ```
-$ /bin/nrf 
+$ ./bin/nrf 
 ```
 
 Após terminado o clone e as configurações do core do free5gc, entre na pasta free5gc/NFs e clone este próprio repositório:  
@@ -67,6 +68,19 @@ $ go run nef.go
 ```
 
 Se tudo estiver funcionando, a NEF estará disponível e exposta na porta 20000
+
+## Primeiros resultados
+A seguir, as primeiras avaliações de desempenho da NEF conceitual, utilizando uma quantidade incremental de AFs (Application Functions) registradas, simulando o incremento de AFs ao longo do tempo. Todos os valores estão descritos na ordem de milissegundos (ms). Os experimentos foram feitos com 1, 5, 10, 50 e 100 AFs e uma instância da NEF. As requisições de inscrição foram feitas através do <a href="https://www.postman.com/">Postman</a>. 
+O computador host do core do free5gc e NEF tem a seguinte configuração: 
+- Processador Intel(R) Xeon(R) CPU E5-2650 0 @ 2.00GHz – 1 core 
+- 4GB de memória RAM 
+
+
+![image](https://user-images.githubusercontent.com/2493503/204617348-ca0491a4-b48e-4542-91f4-efb2edb2edf3.png)
+
+Podemos notar que o tempo de resposta é proporcional a quantidade de AFs registradas. 
+
+![image](https://user-images.githubusercontent.com/2493503/204617391-c5e92409-1b02-4c3f-87f7-2d58bf6a8918.png)
 
 
 
