@@ -13,10 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"github.com/julienschmidt/httprouter"
-	"github.com/segmentio/encoding/json"	
-	//"os"
-	//"github.com/gorilla/mux"
-	//"github.com/arieldll/free5gc-ariel/blob/main/NFs/nef/model_nef_event_exposure_subsc"
+	"github.com/segmentio/encoding/json"		
 	"github.com/google/uuid"
     "github.com/free5gc/openapi/Nnrf_NFManagement"
 	"github.com/free5gc/openapi/models"	
@@ -42,14 +39,11 @@ type SendDataStruct struct {
 	Data string `json:"data"`
 }
 
-func GetMongoDBUri()string{
-	//escrever a leitura posterior
+func GetMongoDBUri()string{	
 	return "mongodb://127.0.0.1:27017"
-	//return GetConfiguration().MongoURI
 }
 
 func GetDBName()string{
-	//ler do yaml
 	return "free5gc"
 }
 
@@ -123,10 +117,6 @@ func RemoveAFsRegistered(id string){
 		}				
 	}
 	CloseConnection(client, ctx)
-	/*result, err := podcastsCollection.DeleteOne(ctx, bson.M{"title": "The Polyglot Developer Podcast"})
-	if err != nil {
-		log.Fatal(err)
-	}*/
 }
 
 func GetAFsRegistered(afType string)[] RegistrationObject{
@@ -147,24 +137,17 @@ func GetAFsRegistered(afType string)[] RegistrationObject{
 		if elem.Type == afType {
 			results = append(results, elem)
 		}
-		//fmt.Println(elem.Id)
 	}
-	//fmt.Println(collection)	
-	//fmt.Println(client, ctx)
-	//_, err := collection.InsertMany(context.TODO(), []interface{}{data})
 
 	/* close MONGO connection */
 	CloseConnection(client, ctx)
-	/*if err != nil {
-		log.Fatal(err)
-	}*/
 	return results
 }
 
 func goLinkById(s string, data string){
+	//This function go to some link passing POST "data" argument params
 	client := &http.Client{}
-	//get link by id
-	l := s //"https://back.placafipe.xyz/solicitacoes/total-por-dia-usuario"
+	l := s
 	
 	var sendData SendDataStruct;
 	sendData.Data = data
@@ -192,38 +175,26 @@ func goLinkById(s string, data string){
         fmt.Println(err)
         return
     }
-
-	//return resp
-	// Display Results
-    //fmt.Println("response Status : ", resp.Status)
-    //fmt.Println("response Headers : ", resp.Header)
+	
     fmt.Println("response Body : ", string(respBody))
 }
 
 func fireHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){
 	start := time.Now()
-	//id := ps.ByName("id")
-	//fmt.Println("id ", id)
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	//fmt.Println(r.Body)
 	var post SubRequest 
 	json.Unmarshal(reqBody, &post)
 	fireType := post.Type
 	dataReceived := post.Data
 	registers := GetAFsRegistered(fireType)
 	elapsed := time.Since(start)
-	//log.Printf("Time for execution %s", elapsed)
 	fmt.Println("Time for execution", len(registers), ";", elapsed, dataReceived)
-	//fmt.Println(" ---- Fire!! ---- ", id)
 
 	for i, v := range registers{
 		fmt.Println(i)
 		fmt.Println(v.Addr)
 		goLinkById(v.Addr, dataReceived)
-	}
-	
-	//rec := goLinkById(id)
-	//fmt.Println("rec ", rec)
+	}	
 }
 
 func unsubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params){	
@@ -249,10 +220,8 @@ func updateSubscriptionHandler(w http.ResponseWriter, r *http.Request, ps httpro
 	AddRegistrationAccept(&oRegister)
 }
 
-//func subscriptionHandler(w http.ResponseWriter, r *http.Request) {	
 func subscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {	
-    if r.Method == "POST" && r.URL.Path == "/subscriptions" {
-		//var p SubRequest
+    if r.Method == "POST" && r.URL.Path == "/subscriptions" {		
 		reqBody, _ := ioutil.ReadAll(r.Body)
 		fmt.Println(r.Body)
 		var post SubRequest 
@@ -268,18 +237,6 @@ func subscriptionHandler(w http.ResponseWriter, r *http.Request, ps httprouter.P
 		
 		w.WriteHeader(http.StatusCreated)
 		return;
-		//fmt.Fprintf(w, "BODYYYY", r.Body)
-		//reqBody, _ := ioutil.ReadAll(r.Body)
-		//json.Unmarshal(reqBody, &p)
-		/*err := json.NewDecoder(r.Body).Decode(&p)
-		if err != nil {
-			fmt.Fprintf(w, ">>> ERRO <<<")
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}*/
-        //fmt.Fprintf(w, "id/addr:", p.id, " -- ", p.addr)
-		//fmt.write
-		//return
     }
 
 	http.Error(w, "404 not found.", http.StatusNotFound)
@@ -291,23 +248,22 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "nef"
 	app.Usage = "5G NEF"	
-	
-	//endereço/porta do NRF
+		
     nrfUri := "http://127.0.0.10:8000"
     
-	//arquivo de configuração
+	//configuration file
     configuration := Nnrf_NFManagement.NewConfiguration()
 	configuration.SetBasePath(nrfUri)
 	client := Nnrf_NFManagement.NewAPIClient(configuration)	
     nfInstanceId := uuid.New().String()
 	
-	//criar um novo profile para a função
+	//creates a new profile to NEF
     var profile models.NfProfile	
 	profile.NfInstanceId = nfInstanceId
 	profile.NfType = models.NfType_NEF
 	profile.NfStatus = models.NfStatus_REGISTERED
 
-	//ip, porta e contexto (http/https) de registro da nova NF (neste caso, NRF)
+	//ip, porta and context (http/https) to register a new NF
 	register_ipv4 := "127.0.0.1"
 	sbi_port := 29895
 	context_urischeme := models.UriScheme_HTTP
@@ -341,21 +297,13 @@ func main() {
 		}
 	}
 
-	//
-	//dkt := GetCollectionsName()
-	//fmt.Println(dkt)
-
-	//GetAFsRegistered("type1")
-
 	router := httprouter.New()
-	//http.HandleFunc("/subscriptions", subscriptionHandler) // Update this line of code	
 	router.POST("/subscriptions", subscriptionHandler)
 	router.PUT("/subscriptions/:id", updateSubscriptionHandler)
 	router.DELETE("/subscriptions/:id", unsubscriptionHandler)
 	router.POST("/fire/:id", fireHandler)
 	fmt.Printf("Starting server at port 20000\n")
 
-	//goLinkById("1")
     if err := http.ListenAndServe(":20000", router); err != nil {
         log.Fatal(err)
     }
