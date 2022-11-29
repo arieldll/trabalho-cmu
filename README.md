@@ -1,7 +1,7 @@
 # trabalho-cmu
 Trabalho de computação móvel e ubíqua
 
-Este trabalho implementa uma NEF (Network Exposure Function) conceitual para o projeto free5GC, com todos os métodos necessários a exposição de eventos através das definições da 3GPP para Nnef_EventExposure
+Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o projeto free5GC, com todos os métodos necessários a exposição de eventos através das definições da 3GPP para Nnef_EventExposure
 
 ## Requisitos: 
 - Core funcional do projeto free5GC
@@ -30,12 +30,14 @@ $ go get github.com/urfave/cli
 
 ## Por onde começar
 
-Faça um clone do projeto oficial: 
-'''git clone https://github.com/free5gc/free5gc'''
+Faça um clone ou fork do projeto oficial do free5gc: 
+```
+git clone https://github.com/free5gc/free5gc
+```
 
-Configure o core do free5GC de modo que a função NRF esteja exposta e funcionando. Você pode ter mais suporte com isso <a href="https://github.com/free5gc/free5gc/wiki">aqui</a>
+Instale todas as dependências do projeto. Após, configure o core do free5GC de modo que a função Network Repository Function (NRF) esteja exposta e rodando. Você pode ter informações de como proceder com isso <a href="https://github.com/free5gc/free5gc/wiki">aqui</a>
 
-Após terminado o clone, entre na pasta free5gc/NFs e clone este repositório:  
+Após terminado o clone e as configurações do core do free5GC, entre na pasta free5gc/NFs e clone este próprio repositório:  
 
 ```
 $ git clone https://github.com/arieldll/trabalho-cmu
