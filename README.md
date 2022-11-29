@@ -7,6 +7,11 @@ Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o p
 
 Este trabalho funciona em conjunto com a Application Function (AF) disponível <a href="https://github.com/opoze/5gaf">aqui</a>
 
+## Arquitetura
+A arquitetura de funcionamento segue o seguinte fluxo: 
+![image](https://user-images.githubusercontent.com/2493503/204649619-ca5960f9-1106-4c24-b32a-4c3f5193f4ed.png)
+
+
 ## Requisitos
 - Core funcional do projeto free5GC
 - Linguagem go versão 1.17 ou superior 
@@ -19,7 +24,7 @@ https://go.dev/dl/
 ## Biliotecas necessárias
 context, strings, time, fmt, net/http, log, bytes, ioutil, mongodb, httprouter, json, uuid, openapi, cli
 
-## Instalando biliotecas de terceiros no go:
+## Instalando biliotecas de terceiros no go
 ```
 $ go get go.mongodb.org/mongo-driver/bson
 $ go get go.mongodb.org/mongo-driver/mongo
