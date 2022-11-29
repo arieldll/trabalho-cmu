@@ -75,7 +75,7 @@ $ go run nef.go
 Se tudo estiver funcionando, a NEF estará disponível e exposta na porta 20000
 
 ## Primeiros resultados
-A seguir, as primeiras avaliações de desempenho da NEF conceitual, utilizando uma quantidade incremental de AFs registradas, simulando o incremento de AFs ao longo do tempo. Todos os valores foram coletados via instrumentaçaõ da aplicação, e estão descritos na ordem de milissegundos (ms). Os experimentos foram feitos com 1, 5, 10, 50 e 100 AFs e uma instância da NEF. As requisições de inscrição foram feitas através do <a href="https://www.postman.com/">Postman</a>. 
+A seguir, as primeiras avaliações de desempenho da NEF conceitual, utilizando uma quantidade incremental de AFs registradas, incrementando o registor de AFs ao longo do tempo. Todos os valores foram coletados via instrumentação da aplicação, e estão descritos na ordem de milissegundos (ms). Os experimentos foram feitos com 1, 5, 10, 50 e 100 AFs e uma instância da NEF. As requisições de inscrição foram feitas através do <a href="https://www.postman.com/">Postman</a>. 
 O computador host do core do free5gc e NEF tem a seguinte configuração: 
 - Processador Intel(R) Xeon(R) CPU E5-2650 0 @ 2.00GHz – 1 core 
 - 4GB de memória RAM 
