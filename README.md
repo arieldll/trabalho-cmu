@@ -39,9 +39,12 @@ git clone https://github.com/free5gc/free5gc
 
 Instale todas as dependências do projeto. Após, configure o core do free5GC de modo que a função Network Repository Function (NRF) esteja exposta e rodando. Você pode ter informações de como proceder com isso <a href="https://github.com/free5gc/free5gc/wiki">aqui</a>
 
-Inicialize a NRF
+Inicialize a NRF. Se você estiver usando o projeto free5gc, a partir da raiz do projeto
+```
+$ /bin/nrf 
+```
 
-Após terminado o clone e as configurações do core do free5GC, entre na pasta free5gc/NFs e clone este próprio repositório:  
+Após terminado o clone e as configurações do core do free5gc, entre na pasta free5gc/NFs e clone este próprio repositório:  
 
 ```
 $ git clone https://github.com/arieldll/trabalho-cmu
