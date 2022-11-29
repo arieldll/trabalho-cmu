@@ -7,7 +7,7 @@ Este trabalho implementa uma Network Exposure Function (NEF) conceitual para o p
 
 Este trabalho funciona em conjunto com a Application Function (AF) disponível <a href="https://github.com/opoze/5gaf">aqui</a>
 
-## Requisitos: 
+## Requisitos
 - Core funcional do projeto free5GC
 - Linguagem go versão 1.17 ou superior 
 - Ubuntu 20.04 ou superior 
