@@ -12,11 +12,17 @@ A arquitetura de funcionamento segue o seguinte fluxo:
 ![image](https://user-images.githubusercontent.com/2493503/204649619-ca5960f9-1106-4c24-b32a-4c3f5193f4ed.png)
 
 
-## Requisitos
+## Requisitos de software
 - Core funcional do projeto free5gc
 - Linguagem go versão 1.17 ou superior 
 - Ubuntu 22.04 ou superior 
 - Bibliotecas da linguagem go 
+
+## Requisitos de hardware 
+- Processador com no mínimo 2 GHz 
+- 4 Gigabytes de memória RAM 
+- 2 Gigabyte de espaço em disco livre 
+- Sistema Operacional Linux
 
 ## Como instalar o go? 
 https://go.dev/dl/
