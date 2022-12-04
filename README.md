@@ -128,7 +128,7 @@ https://go.dev/dl/
 ## 3rd party libraries of golang
 context, strings, time, fmt, net/http, log, bytes, ioutil, mongodb, httprouter, json, uuid, openapi, cli
 
-## Installing 3rd party libraries on golang
+## Installing 3rd party libraries in golang
 ```
 $ go get go.mongodb.org/mongo-driver/bson
 $ go get go.mongodb.org/mongo-driver/mongo
@@ -143,54 +143,53 @@ $ go get github.com/urfave/cli
 
 ## How to start
 
-Faça um clone ou fork do projeto oficial do free5gc:
+Clone or fork the official free5gc project: 
 
 ```
 git clone https://github.com/free5gc/free5gc
 ```
 
-Instale todas as dependências e compile as funções disponíveis no projeto, <a href="https://github.com/free5gc/free5gc">free5gc</a>, <a href="https://github.com/free5gc/free5gc/wiki/Installation">conforme este link</a>. Para que a NEF funcione, faz-se necessário apenas a compilação e execução da Network Repository Function (NRF), junto com o MongoDB. Fica a seu critério compilar ou não as outras funções do core.  
+Install all dependencies and compile the NFs available in the project, <a href="https://github.com/free5gc/free5gc">free5gc</a>, as such<a href="https://github.com/free5gc/free5gc/wiki/Installation">this link</a>. For to NEF works, you need compile and execute Network Repository Function (NRF), together MongoDB. If necessary, you would compile the other 5G core functions.  
 
-Feito a instalação e compilação da NRF, inicialize-a. Se você estiver usando o projeto free5gc, a partir da raiz do projeto
+After, start NRF. From 5gc root project: 
 
 ```
 $ ./bin/nrf 
 ```
-
-Tendo a NRF instanciada, entre na pasta free5gc/NFs e clone este próprio repositório: 
+Enter on the free5gc/NFs folder and clone this one repository: 
 
 ```
 $ git clone https://github.com/arieldll/trabalho-cmu
 ```
 
-No arquivo nef.go, configure o seguinte: 
+On the nef.go file, configure as follow: 
 
 ```
-Na linha 43, insira o endereço e porta do MongoDB do projeto free5gc
+In the line 43, change to the ip/port of MongoDB
 ```
 
 ```
-Na linha 252, configure o endereço e porta da NRF
+In the line 252, change to the ip/port of NRF
 ```
 
-Após, apenas execute: 
+If all dependencies are correct, just execute: 
 
 ```
 $ go run nef.go
 ```
 
-Se tudo estiver funcionando, a NEF estará disponível e exposta na porta 20000
+If all is working, NEF is available at http://localhost:20000
 
-## Primeiros resultados
-A seguir, as primeiras avaliações de desempenho da NEF conceitual, utilizando uma quantidade incremental de AFs registradas, incrementando o registor de AFs ao longo do tempo. Todos os valores foram coletados via instrumentação da aplicação, e estão descritos na ordem de milissegundos (ms). Os experimentos foram feitos com 1, 5, 10, 50 e 100 AFs e uma instância da NEF. As requisições de inscrição foram feitas através do <a href="https://www.postman.com/">Postman</a>. 
-O computador host do core do free5gc e NEF tem a seguinte configuração: 
-- Processador Intel(R) Xeon(R) CPU E5-2650 0 @ 2.00GHz – 1 core 
-- 4GB de memória RAM 
+## First results
+Above, the first performance evaluations of this implementation of conceptual NEF. For this evaluation, are used an incremental amount of registered AFs, scaling the register of AFs over time. All values were collected via application's instrumentation, and all value are described in the order of milliseconds (ms). The experiments were carried out with 1, 5, 10, 50 and 100 AFs and just one instance of NEF. The subscriptions requests were made using <a href="https://www.postman.com/">Postman</a>.
+The free5gc and NEF core host computer has the following configuration:
+- Intel(R) Xeon(R) processor E5-2650 CPU 0 @ 2.00GHz – 1 core
+- 4GB of RAM memory
 
 
 ![image](https://user-images.githubusercontent.com/2493503/204617348-ca0491a4-b48e-4542-91f4-efb2edb2edf3.png)
 
-Podemos notar que o tempo de resposta é proporcional a quantidade de AFs registradas. 
+We can see a response time is proportional over the amount of registed AFs
 
 ![image](https://user-images.githubusercontent.com/2493503/204617391-c5e92409-1b02-4c3f-87f7-2d58bf6a8918.png)
 
