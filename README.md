@@ -13,7 +13,7 @@ A arquitetura de funcionamento segue o seguinte fluxo:
 
 
 ## Requisitos de software
-- Core funcional do projeto free5gc
+- Core funcional do projeto <a href="https://github.com/free5gc/free5gc">free5gc</a>
 - Linguagem go versão 1.17 ou superior 
 - Ubuntu 22.04 ou superior 
 - Bibliotecas da linguagem go 
@@ -46,19 +46,21 @@ $ go get github.com/urfave/cli
 
 ## Por onde começar
 
-Faça um clone ou fork do projeto oficial do free5gc: 
+Faça um clone ou fork do projeto oficial do free5gc:
+
 ```
 git clone https://github.com/free5gc/free5gc
 ```
 
-Instale todas as dependências do projeto. Após, configure o core do free5gc de modo que a função Network Repository Function (NRF) esteja exposta e rodando. Você pode ter informações de como proceder com isso <a href="https://github.com/free5gc/free5gc/wiki">aqui</a>
+Instale todas as dependências e compile as funções disponíveis no projeto, <a href="https://github.com/free5gc/free5gc">free5gc</a>, <a href="https://github.com/free5gc/free5gc/wiki/Installation">conforme este link</a>. Para que a NEF funcione, faz-se necessário apenas a compilação e execução da Network Repository Function (NRF), junto com o MongoDB. Fica a seu critério compilar ou não as outras funções do core.  
 
-Inicialize a NRF. Se você estiver usando o projeto free5gc, a partir da raiz do projeto
+Feito a instalação e compilação da NRF, inicialize-a. Se você estiver usando o projeto free5gc, a partir da raiz do projeto
+
 ```
 $ ./bin/nrf 
 ```
 
-Após terminado o clone e as configurações do core do free5gc, entre na pasta free5gc/NFs e clone este próprio repositório:  
+Tendo a NRF instanciada, entre na pasta free5gc/NFs e clone este próprio repositório: 
 
 ```
 $ git clone https://github.com/arieldll/trabalho-cmu
