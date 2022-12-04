@@ -107,7 +107,7 @@ This work implements a conceptual Network Exposure Function (NEF) to the <a href
 
 ## Achitecture
 The architecture works as flows: 
-![image](https://user-images.githubusercontent.com/2493503/204649619-ca5960f9-1106-4c24-b32a-4c3f5193f4ed.png)
+![image](https://user-images.githubusercontent.com/2493503/205520057-4c999a39-0839-480f-8a97-23756c47d8c8.png)
 
 
 ## Software requirements
@@ -192,5 +192,6 @@ The free5gc and NEF core host computer has the following configuration:
 We can see a response time is proportional over the amount of registed AFs
 
 ![image](https://user-images.githubusercontent.com/2493503/204617391-c5e92409-1b02-4c3f-87f7-2d58bf6a8918.png)
+
 
 
