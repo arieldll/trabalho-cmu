@@ -187,11 +187,12 @@ The free5gc and NEF core host computer has the following configuration:
 - 4GB of RAM memory
 
 
-![image](https://user-images.githubusercontent.com/2493503/204617348-ca0491a4-b48e-4542-91f4-efb2edb2edf3.png)
+![image](https://user-images.githubusercontent.com/2493503/205520904-2e901179-0c44-46ff-b6d0-92cfbe04d511.png)
 
 We can see a response time is proportional over the amount of registed AFs
 
-![image](https://user-images.githubusercontent.com/2493503/204617391-c5e92409-1b02-4c3f-87f7-2d58bf6a8918.png)
+![image](https://user-images.githubusercontent.com/2493503/205520824-4152e018-a216-4dec-9d24-2482f2ab13a8.png)
+
 
 
 
