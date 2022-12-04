@@ -107,7 +107,7 @@ This work implements a conceptual Network Exposure Function (NEF) to the <a href
 
 ## Achitecture
 The architecture works as flows: 
-![image](https://user-images.githubusercontent.com/2493503/205520057-4c999a39-0839-480f-8a97-23756c47d8c8.png)
+![image](https://user-images.githubusercontent.com/2493503/205521236-b03eeff8-6a9f-40ad-a259-7832be74ca52.png)
 
 
 ## Software requirements
