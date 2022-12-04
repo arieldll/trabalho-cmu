@@ -103,9 +103,9 @@ Podemos notar que o tempo de resposta é proporcional a quantidade de AFs regist
 <p align="left"> <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> <a href="https://golang.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg" alt="go" width="40" height="40"/> </a> <a href="https://www.linux.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> </p>
 
 
-This work implements a conceptual Network Exposure Function (NEF) to the <a href="https://github.com/free5gc/free5gc">free5gc project</a>, covering all endpoints defined by the event exposure through 3GPP definitions for the <a href="https://github.com/jdegre/5GC_APIs/blob/Rel-18/TS29591_Nnef_EventExposure.yaml">TS29591_Nnef_EventExposure</a>. This project works togheter the Application Function (AF) available <a href="https://github.com/opoze/5gaf">here</a>.
+This work implements a conceptual Network Exposure Function (NEF) to the <a href="https://github.com/free5gc/free5gc">free5gc project</a>, covering all endpoints defined by the event exposure through 3GPP definitions for the <a href="https://github.com/jdegre/5GC_APIs/blob/Rel-18/TS29591_Nnef_EventExposure.yaml">TS29591_Nnef_EventExposure</a>. This project works together the Application Function (AF) available <a href="https://github.com/opoze/5gaf">here</a>.
 
-## Achitecture
+## Architecture
 The architecture works as flows: 
 ![image](https://user-images.githubusercontent.com/2493503/205521236-b03eeff8-6a9f-40ad-a259-7832be74ca52.png)
 
@@ -118,8 +118,8 @@ The architecture works as flows:
 
 ## Hardware requirements
 - Processor minimum 2 GHz 
-- 4 Gigabytes of RAM memory
-- 2 Gigabyte free disk space
+- 4 Gigabytes of RAM
+- 2 Gigabytes of free disk space
 - Linux Operating System
 
 ## How to install golang? 
@@ -149,7 +149,7 @@ Clone or fork the official free5gc project:
 git clone https://github.com/free5gc/free5gc
 ```
 
-Install all dependencies and compile the NFs available in the project, <a href="https://github.com/free5gc/free5gc">free5gc</a>, as such<a href="https://github.com/free5gc/free5gc/wiki/Installation">this link</a>. For to NEF works, you need compile and execute Network Repository Function (NRF), together MongoDB. If necessary, you would compile the other 5G core functions.  
+Install all dependencies and compile the NFs available in the project, <a href="https://github.com/free5gc/free5gc">free5gc</a>, as such<a href="https://github.com/free5gc/free5gc/wiki/Installation">this link</a>. For NEF works, you need to compile and execute Network Repository Function (NRF), together with MongoDB. If necessary, you would compile the other 5G core functions.  
 
 After, start NRF. From 5gc root project: 
 
@@ -165,11 +165,11 @@ $ git clone https://github.com/arieldll/trabalho-cmu
 On the nef.go file, configure as follow: 
 
 ```
-In the line 43, change to the ip/port of MongoDB
+In line 43, change to the IP/port of MongoDB
 ```
 
 ```
-In the line 252, change to the ip/port of NRF
+In line 252, change to the IP/port of NRF
 ```
 
 If all dependencies are correct, just execute: 
@@ -181,18 +181,15 @@ $ go run nef.go
 If all is working, NEF is available at http://localhost:20000
 
 ## First results
-Above, the first performance evaluations of this implementation of conceptual NEF. For this evaluation, are used an incremental amount of registered AFs, scaling the register of AFs over time. All values were collected via application's instrumentation, and all value are described in the order of milliseconds (ms). The experiments were carried out with 1, 5, 10, 50 and 100 AFs and just one instance of NEF. The subscriptions requests were made using <a href="https://www.postman.com/">Postman</a>.
+Above, are the first performance evaluations of this implementation of conceptual NEF. For this evaluation, are used an incremental amount of registered AFs, scaling the register of AFs over time. All values were collected via the application's instrumentation, and all values are described in the order of milliseconds (ms). The experiments were carried out with 1, 5, 10, 50, and 100 AFs and just one instance of NEF. The subscr
+tion requests were made using <a href="https://www.postman.com/">Postman</a>.
 The free5gc and NEF core host computer has the following configuration:
 - Intel(R) Xeon(R) processor E5-2650 CPU 0 @ 2.00GHz – 1 core
-- 4GB of RAM memory
+- 4GB of RAM
 
 
 ![image](https://user-images.githubusercontent.com/2493503/205520904-2e901179-0c44-46ff-b6d0-92cfbe04d511.png)
 
-We can see a response time is proportional over the amount of registed AFs
+We can see a response time is proportional to the amount of registered AFs
 
 ![image](https://user-images.githubusercontent.com/2493503/205520824-4152e018-a216-4dec-9d24-2482f2ab13a8.png)
-
-
-
-
