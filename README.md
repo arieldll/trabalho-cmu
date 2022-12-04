@@ -91,7 +91,7 @@ O computador host do core do free5gc e NEF tem a seguinte configuração:
 - 4GB de memória RAM 
 
 
-![image](https://user-images.githubusercontent.com/2493503/204617348-ca0491a4-b48e-4542-91f4-efb2edb2edf3.png)
+![image](https://user-images.githubusercontent.com/2493503/205521049-edbca8f3-f395-427a-87cb-00625b21d2f7.png)
 
 Podemos notar que o tempo de resposta é proporcional a quantidade de AFs registradas. 
 
